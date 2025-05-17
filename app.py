@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 # 🔌 Настройка Redis-кэша
 app.config['CACHE_TYPE'] = 'RedisCache'
-app.config['CACHE_REDIS_HOST'] = os.getenv('REDIS_HOST', 'redis')
+app.config['CACHE_REDIS_HOST'] = os.getenv('REDIS_HOST', '18.157.112.83')
 app.config['CACHE_REDIS_PORT'] = 6379
 app.config['CACHE_REDIS_DB'] = 0
 app.config['CACHE_DEFAULT_TIMEOUT'] = 3600  # 1 час
@@ -19,7 +19,7 @@ cache = Cache(app)
 
 db_user = os.getenv("POSTGRES_USER", "postgres_user")
 db_pass = os.getenv("POSTGRES_PASSWORD", "postgres_password")
-db_host = os.getenv("POSTGRES_HOST", "db")
+db_host = os.getenv("POSTGRES_HOST", "18.157.112.83")
 db_port = os.getenv("POSTGRES_PORT", 5432)
 db_name = os.getenv("POSTGRES_DB", "postgres_db")
 
