@@ -4,7 +4,7 @@ import pandas as pd
 from sqlalchemy import create_engine
 import json
 import os
-
+from flask_cors import CORS
 app = Flask(__name__)
 
 # 🔌 Настройка Redis-кэша
@@ -16,7 +16,7 @@ app.config['CACHE_DEFAULT_TIMEOUT'] = 3600  # 1 час
 
 # ✅ Создание объекта Cache
 cache = Cache(app)
-
+CORS(app)
 db_user = os.getenv("POSTGRES_USER", "postgres_user")
 db_pass = os.getenv("POSTGRES_PASSWORD", "postgres_password")
 db_host = os.getenv("POSTGRES_HOST", "18.157.112.83")
