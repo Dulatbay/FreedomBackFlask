@@ -36,6 +36,11 @@ services:
       - "8032:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+  frontend:
+    image: alishbatyr/freedomfront
+    ports:
+      - "8084:4173"
+    restart: unless-stopped
 
 volumes:
   pgdata:

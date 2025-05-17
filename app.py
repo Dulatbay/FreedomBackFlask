@@ -5,6 +5,10 @@ from sqlalchemy import create_engine
 import json
 import os
 from flask_cors import CORS
+from segmentation import get_data
+from flask import jsonify
+import socketserver
+
 app = Flask(__name__)
 
 # 🔌 Настройка Redis-кэша
@@ -32,6 +36,7 @@ from flask import request
 def get_channel_distribution():
     req_type = request.args.get('type', 'users_count')
     cache_key = f'channels_data_{req_type}'
+    print("/api/channels")
 
     @cache.cached(timeout=3600, key_prefix=cache_key)
     def load_data():
@@ -87,6 +92,21 @@ def get_channel_distribution():
         return Response(json.dumps(data, ensure_ascii=False), status=500, content_type="application/json; charset=utf-8")
 
     return Response(json.dumps(data, ensure_ascii=False), content_type="application/json; charset=utf-8")
+
+
+@app.route('/api/rfm_clusters', methods=['GET'])
+@cache.cached(timeout=3600, key_prefix='rfm_clusters')
+def rfm_clusters():
+    try:
+        print("/api/rfm_clusters")
+        df = get_data()  # предположим, что get_data возвращает DataFrame
+        result = df.to_dict(orient='records')  # конвертация
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+class ThreadedWSGIServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
+    timeout = 600  # 10 минут
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
